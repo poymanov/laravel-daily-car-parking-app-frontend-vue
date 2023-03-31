@@ -25,7 +25,10 @@ docker-build:
 frontend-clear:
 	docker run --rm -v ${PWD}:/app -w /app alpine sh -c 'rm -rf .ready'
 
-frontend-init: frontend-yarn-install frontend-ready
+frontend-copy-env:
+	cp .env.example .env
+
+frontend-init: frontend-yarn-install frontend-copy-env frontend-ready
 
 frontend-yarn-install:
 	docker-compose run --rm frontend-node-cli yarn install
