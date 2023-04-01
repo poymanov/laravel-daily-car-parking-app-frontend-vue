@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useAuth } from './stores/auth'
+import { useAuth } from '@/stores/auth'
 
 window.axios = axios
 
@@ -12,7 +12,7 @@ window.axios.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       const auth = useAuth()
-      auth.destroyTokenAndRedirectTo('register')
+      auth.destroyTokenAndRedirectTo()
     }
 
     return Promise.reject(error)
