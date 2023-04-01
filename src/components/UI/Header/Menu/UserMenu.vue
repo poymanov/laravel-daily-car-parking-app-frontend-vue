@@ -22,15 +22,22 @@ if (auth.check) {
     <ul class="absolute hidden text-gray-700 pt-1 group-hover:block">
       <li>
         <RouterLink
-          class="router-link rounded-t bg-gray-200 hover:bg-gray-300 py-2 px-4 block whitespace-no-wrap"
+          class="router-link rounded-t bg-gray-200 hover:bg-gray-300 py-2 px-4 block"
           :to="{ name: 'profile.edit' }"
           >Profile</RouterLink
         >
       </li>
       <li>
+        <RouterLink
+          class="router-link rounded-t bg-gray-200 hover:bg-gray-300 py-2 px-4 block"
+          :to="{ name: 'profile.change-password' }"
+          >Change password</RouterLink
+        >
+      </li>
+      <li>
         <button
           @click="auth.logout"
-          class="router-link rounded-b bg-gray-200 hover:bg-gray-300 py-2 px-4 block whitespace-no-wrap"
+          class="router-link text-left rounded-b bg-gray-200 hover:bg-gray-300 py-2 px-4 block w-full"
         >
           Logout
         </button>
