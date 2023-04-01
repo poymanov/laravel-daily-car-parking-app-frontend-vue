@@ -2,11 +2,13 @@ import { computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
 import { useRouter } from 'vue-router'
+import { useProfile } from '@/stores/profile'
 
 export const useAuth = defineStore('auth', () => {
   const router = useRouter()
   const accessToken = useStorage('access_token', '')
   const check = computed(() => !!accessToken.value)
+  const profile = useProfile()
 
   function setAccessToken(value) {
     accessToken.value = value
@@ -16,6 +18,7 @@ export const useAuth = defineStore('auth', () => {
   function login(accessToken) {
     setAccessToken(accessToken)
 
+    profile.fetchCurrentUser()
     router.push({ name: 'vehicles.index' })
   }
 
@@ -26,6 +29,7 @@ export const useAuth = defineStore('auth', () => {
 
   async function logout() {
     return window.axios.post('auth/logout').finally(() => {
+      profile.resetCurrentUser()
       destroyTokenAndRedirectTo()
     })
   }
