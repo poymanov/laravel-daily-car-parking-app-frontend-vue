@@ -10,6 +10,11 @@ export const useRegister = defineStore('register', () => {
     password_confirmation: ''
   })
 
+  const status = ref({
+    type: null,
+    message: null
+  })
+
   const loading = ref(false)
 
   const errors = reactive({})
@@ -21,6 +26,11 @@ export const useRegister = defineStore('register', () => {
     form.email = ''
     form.password = ''
     form.password_confirmation = ''
+
+    status.value = {
+      type: null,
+      message: null
+    }
 
     errors.value = {}
   }
@@ -40,6 +50,13 @@ export const useRegister = defineStore('register', () => {
         if (error.response.status === 422) {
           errors.value = error.response.data.errors
         }
+
+        if (error.response.status === 400) {
+          status.value = {
+            type: 'error',
+            message: error.response.data.message
+          }
+        }
       })
       .finally(() => {
         form.password = ''
@@ -48,5 +65,5 @@ export const useRegister = defineStore('register', () => {
       })
   }
 
-  return { form, errors, loading, resetForm, handleSubmit }
+  return { form, errors, loading, resetForm, handleSubmit, status }
 })

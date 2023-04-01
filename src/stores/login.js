@@ -4,7 +4,10 @@ import { useAuth } from '@/stores/auth'
 
 export const useLogin = defineStore('login', () => {
   const loading = ref(false)
-  const status = ref('')
+  const status = ref({
+    type: null,
+    message: null
+  })
   const errors = reactive({})
   const auth = useAuth()
 
@@ -19,6 +22,11 @@ export const useLogin = defineStore('login', () => {
     form.password = ''
     form.remember = false
 
+    status.value = {
+      type: null,
+      message: null
+    }
+
     errors.value = {}
   }
 
@@ -27,7 +35,10 @@ export const useLogin = defineStore('login', () => {
 
     loading.value = true
     errors.value = {}
-    status.value = ''
+    status.value = {
+      type: null,
+      message: null
+    }
 
     return window.axios
       .post('auth/login', form)
@@ -40,7 +51,10 @@ export const useLogin = defineStore('login', () => {
         }
 
         if (error.response.status === 400) {
-          status.value = error.response.data.message
+          status.value = {
+            type: 'error',
+            message: error.response.data.message
+          }
         }
       })
       .finally(() => {
