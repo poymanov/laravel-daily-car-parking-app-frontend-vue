@@ -27,3 +27,11 @@
 .router-link-active.router-link {
   @apply underline;
 }
+
+.alert {
+  @apply border px-4 py-3 rounded relative;
+}
+
+.alert-error {
+  @apply text-red-700 bg-red-100 border-red-400;
+}

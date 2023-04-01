@@ -10,6 +10,7 @@ onBeforeUnmount(store.resetForm)
   <form @submit.prevent="store.handleSubmit" novalidate>
     <div class="flex flex-col mx-auto md:w-96 w-full">
       <h1 class="text-2xl font-bold mb-4 text-center">Login</h1>
+      <div class="alert alert-error mb-4" v-show="store.status">{{ store.status }}</div>
       <div class="flex flex-col gap-2 mb-4">
         <label for="email" class="required">Email</label>
         <input

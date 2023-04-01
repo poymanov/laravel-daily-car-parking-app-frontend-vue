@@ -4,6 +4,7 @@ import { useAuth } from '@/stores/auth'
 
 export const useLogin = defineStore('login', () => {
   const loading = ref(false)
+  const status = ref('')
   const errors = reactive({})
   const auth = useAuth()
 
@@ -26,6 +27,7 @@ export const useLogin = defineStore('login', () => {
 
     loading.value = true
     errors.value = {}
+    status.value = ''
 
     return window.axios
       .post('auth/login', form)
@@ -38,7 +40,7 @@ export const useLogin = defineStore('login', () => {
         }
 
         if (error.response.status === 400) {
-          alert(error.response.data.message)
+          status.value = error.response.data.message
         }
       })
       .finally(() => {
@@ -47,5 +49,5 @@ export const useLogin = defineStore('login', () => {
       })
   }
 
-  return { form, errors, loading, resetForm, handleSubmit }
+  return { form, status, errors, loading, resetForm, handleSubmit }
 })
