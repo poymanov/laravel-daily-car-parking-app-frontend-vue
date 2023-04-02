@@ -1,9 +1,11 @@
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import { defineStore } from 'pinia'
 import { useFormStatus } from '@/composables/formStatus'
+import { useFormLoading } from '@/composables/formLoading'
 
 export const useProfile = defineStore('profile', () => {
-  const loading = ref(false)
+  const formLoading = useFormLoading()
+  const loading = formLoading.loading
 
   const formStatus = useFormStatus()
   const status = formStatus.status
@@ -51,7 +53,8 @@ export const useProfile = defineStore('profile', () => {
   function updateProfile() {
     if (loading.value) return
 
-    loading.value = true
+    formLoading.on()
+
     errors.value = {}
 
     formStatus.reset()
@@ -73,7 +76,7 @@ export const useProfile = defineStore('profile', () => {
         }
       })
       .finally(() => {
-        loading.value = false
+        formLoading.off()
       })
   }
 

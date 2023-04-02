@@ -1,7 +1,8 @@
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import { defineStore } from 'pinia'
 import { useAuth } from '@/stores/auth'
 import { useFormStatus } from '@/composables/formStatus'
+import { useFormLoading } from '@/composables/formLoading'
 
 export const useRegister = defineStore('register', () => {
   const form = reactive({
@@ -14,7 +15,8 @@ export const useRegister = defineStore('register', () => {
   const formStatus = useFormStatus()
   const status = formStatus.status
 
-  const loading = ref(false)
+  const formLoading = useFormLoading()
+  const loading = formLoading.loading
 
   const errors = reactive({})
 
@@ -34,7 +36,7 @@ export const useRegister = defineStore('register', () => {
   function handleSubmit() {
     if (loading.value) return
 
-    loading.value = true
+    formLoading.on()
     errors.value = {}
 
     formStatus.reset()
@@ -56,7 +58,8 @@ export const useRegister = defineStore('register', () => {
       .finally(() => {
         form.password = ''
         form.password_confirmation = ''
-        loading.value = false
+
+        formLoading.off()
       })
   }
 

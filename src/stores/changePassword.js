@@ -1,15 +1,18 @@
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import { defineStore } from 'pinia'
 import { useFormStatus } from '@/composables/formStatus'
+import { useFormLoading } from '@/composables/formLoading'
 
 export const useChangePassword = defineStore('change-password', () => {
-  const loading = ref(false)
   const errors = reactive({})
   const form = reactive({
     current_password: '',
     password: '',
     password_confirmation: ''
   })
+
+  const formLoading = useFormLoading()
+  const loading = formLoading.loading
 
   const formStatus = useFormStatus()
   const status = formStatus.status
@@ -29,7 +32,7 @@ export const useChangePassword = defineStore('change-password', () => {
 
     formStatus.reset()
 
-    loading.value = true
+    formLoading.on()
     errors.value = {}
 
     return window.axios
@@ -50,7 +53,7 @@ export const useChangePassword = defineStore('change-password', () => {
         form.current_password = ''
         form.password = ''
         form.password_confirmation = ''
-        loading.value = false
+        formLoading.off()
       })
   }
 
