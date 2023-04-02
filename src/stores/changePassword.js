@@ -2,9 +2,9 @@ import { reactive } from 'vue'
 import { defineStore } from 'pinia'
 import { useFormStatus } from '@/composables/formStatus'
 import { useFormLoading } from '@/composables/formLoading'
+import { useFormErrors } from '@/composables/formErrors'
 
 export const useChangePassword = defineStore('change-password', () => {
-  const errors = reactive({})
   const form = reactive({
     current_password: '',
     password: '',
@@ -17,14 +17,16 @@ export const useChangePassword = defineStore('change-password', () => {
   const formStatus = useFormStatus()
   const status = formStatus.status
 
+  const formErrors = useFormErrors()
+  const errors = formErrors.errors
+
   function resetForm() {
     form.current_password = ''
     form.password = ''
     form.password_confirmation = ''
 
     formStatus.reset()
-
-    errors.value = {}
+    formErrors.reset()
   }
 
   function updatePassword() {
@@ -33,7 +35,7 @@ export const useChangePassword = defineStore('change-password', () => {
     formStatus.reset()
 
     formLoading.on()
-    errors.value = {}
+    formErrors.reset()
 
     return window.axios
       .patch('profile/password', form)
@@ -42,7 +44,7 @@ export const useChangePassword = defineStore('change-password', () => {
       })
       .catch((error) => {
         if (error.response.status === 422) {
-          errors.value = error.response.data.errors
+          formErrors.add(error.response.data.errors)
         }
 
         if (error.response.status === 400) {

@@ -2,6 +2,7 @@ import { reactive } from 'vue'
 import { defineStore } from 'pinia'
 import { useFormStatus } from '@/composables/formStatus'
 import { useFormLoading } from '@/composables/formLoading'
+import { useFormErrors } from '@/composables/formErrors'
 
 export const useProfile = defineStore('profile', () => {
   const formLoading = useFormLoading()
@@ -10,7 +11,8 @@ export const useProfile = defineStore('profile', () => {
   const formStatus = useFormStatus()
   const status = formStatus.status
 
-  const errors = reactive({})
+  const formErrors = useFormErrors()
+  const errors = formErrors.errors
 
   const currentUser = reactive({
     name: null,
@@ -27,8 +29,7 @@ export const useProfile = defineStore('profile', () => {
     form.email = null
 
     formStatus.reset()
-
-    errors.value = {}
+    formErrors.reset()
   }
 
   async function fetchCurrentUser() {
@@ -55,8 +56,7 @@ export const useProfile = defineStore('profile', () => {
 
     formLoading.on()
 
-    errors.value = {}
-
+    formErrors.reset()
     formStatus.reset()
 
     return window.axios
@@ -68,7 +68,7 @@ export const useProfile = defineStore('profile', () => {
       })
       .catch((error) => {
         if (error.response.status === 422) {
-          errors.value = error.response.data.errors
+          formErrors.add(error.response.data.errors)
         }
 
         if (error.response.status === 400) {

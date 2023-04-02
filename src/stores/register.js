@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { useAuth } from '@/stores/auth'
 import { useFormStatus } from '@/composables/formStatus'
 import { useFormLoading } from '@/composables/formLoading'
+import { useFormErrors } from '@/composables/formErrors'
 
 export const useRegister = defineStore('register', () => {
   const form = reactive({
@@ -18,7 +19,8 @@ export const useRegister = defineStore('register', () => {
   const formLoading = useFormLoading()
   const loading = formLoading.loading
 
-  const errors = reactive({})
+  const formErrors = useFormErrors()
+  const errors = formErrors.errors
 
   const auth = useAuth()
 
@@ -29,16 +31,15 @@ export const useRegister = defineStore('register', () => {
     form.password_confirmation = ''
 
     formStatus.reset()
-
-    errors.value = {}
+    formErrors.reset()
   }
 
   function handleSubmit() {
     if (loading.value) return
 
     formLoading.on()
-    errors.value = {}
 
+    formErrors.reset()
     formStatus.reset()
 
     return window.axios
@@ -48,7 +49,7 @@ export const useRegister = defineStore('register', () => {
       })
       .catch((error) => {
         if (error.response.status === 422) {
-          errors.value = error.response.data.errors
+          formErrors.add(error.response.data.errors)
         }
 
         if (error.response.status === 400) {
