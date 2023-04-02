@@ -1,6 +1,7 @@
 import { reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useAuth } from '@/stores/auth'
+import { useFormStatus } from '@/composables/formStatus'
 
 export const useRegister = defineStore('register', () => {
   const form = reactive({
@@ -10,10 +11,8 @@ export const useRegister = defineStore('register', () => {
     password_confirmation: ''
   })
 
-  const status = ref({
-    type: null,
-    message: null
-  })
+  const formStatus = useFormStatus()
+  const status = formStatus.status
 
   const loading = ref(false)
 
@@ -27,10 +26,7 @@ export const useRegister = defineStore('register', () => {
     form.password = ''
     form.password_confirmation = ''
 
-    status.value = {
-      type: null,
-      message: null
-    }
+    formStatus.reset()
 
     errors.value = {}
   }
@@ -40,6 +36,8 @@ export const useRegister = defineStore('register', () => {
 
     loading.value = true
     errors.value = {}
+
+    formStatus.reset()
 
     return window.axios
       .post('auth/register', form)
@@ -52,10 +50,7 @@ export const useRegister = defineStore('register', () => {
         }
 
         if (error.response.status === 400) {
-          status.value = {
-            type: 'error',
-            message: error.response.data.message
-          }
+          formStatus.createError(error.response.data.message)
         }
       })
       .finally(() => {

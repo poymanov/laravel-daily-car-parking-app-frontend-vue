@@ -1,12 +1,13 @@
 import { reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
+import { useFormStatus } from '@/composables/formStatus'
 
 export const useProfile = defineStore('profile', () => {
   const loading = ref(false)
-  const status = ref({
-    type: null,
-    message: null
-  })
+
+  const formStatus = useFormStatus()
+  const status = formStatus.status
+
   const errors = reactive({})
 
   const currentUser = reactive({
@@ -23,10 +24,7 @@ export const useProfile = defineStore('profile', () => {
     form.name = null
     form.email = null
 
-    status.value = {
-      type: null,
-      message: null
-    }
+    formStatus.reset()
 
     errors.value = {}
   }
@@ -55,20 +53,15 @@ export const useProfile = defineStore('profile', () => {
 
     loading.value = true
     errors.value = {}
-    status.value = {
-      type: null,
-      message: null
-    }
+
+    formStatus.reset()
 
     return window.axios
       .patch('profile', form)
       .then((response) => {
         form.name = response.data.name
         form.email = response.data.email
-        status.value = {
-          type: 'success',
-          message: 'Profile has been updated'
-        }
+        formStatus.createSuccess('Profile has been updated')
       })
       .catch((error) => {
         if (error.response.status === 422) {
@@ -76,10 +69,7 @@ export const useProfile = defineStore('profile', () => {
         }
 
         if (error.response.status === 400) {
-          status.value = {
-            type: 'error',
-            message: error.response.data.message
-          }
+          formStatus.createSuccess(error.response.data.message)
         }
       })
       .finally(() => {

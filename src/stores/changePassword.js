@@ -1,5 +1,6 @@
 import { reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
+import { useFormStatus } from '@/composables/formStatus'
 
 export const useChangePassword = defineStore('change-password', () => {
   const loading = ref(false)
@@ -10,20 +11,15 @@ export const useChangePassword = defineStore('change-password', () => {
     password_confirmation: ''
   })
 
-  const status = ref({
-    type: null,
-    message: null
-  })
+  const formStatus = useFormStatus()
+  const status = formStatus.status
 
   function resetForm() {
     form.current_password = ''
     form.password = ''
     form.password_confirmation = ''
 
-    status.value = {
-      type: null,
-      message: null
-    }
+    formStatus.reset()
 
     errors.value = {}
   }
@@ -31,10 +27,7 @@ export const useChangePassword = defineStore('change-password', () => {
   function updatePassword() {
     if (loading.value) return
 
-    status.value = {
-      type: null,
-      message: null
-    }
+    formStatus.reset()
 
     loading.value = true
     errors.value = {}
@@ -42,10 +35,7 @@ export const useChangePassword = defineStore('change-password', () => {
     return window.axios
       .patch('profile/password', form)
       .then(() => {
-        status.value = {
-          type: 'success',
-          message: 'Password has been updated.'
-        }
+        formStatus.createSuccess('Password has been updated.')
       })
       .catch((error) => {
         if (error.response.status === 422) {
@@ -53,10 +43,7 @@ export const useChangePassword = defineStore('change-password', () => {
         }
 
         if (error.response.status === 400) {
-          status.value = {
-            type: 'error',
-            message: error.response.data.message
-          }
+          formStatus.createError(error.response.data.message)
         }
       })
       .finally(() => {

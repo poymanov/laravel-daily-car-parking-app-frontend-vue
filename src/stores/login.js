@@ -1,13 +1,14 @@
 import { reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useAuth } from '@/stores/auth'
+import { useFormStatus } from '@/composables/formStatus'
 
 export const useLogin = defineStore('login', () => {
   const loading = ref(false)
-  const status = ref({
-    type: null,
-    message: null
-  })
+
+  const formStatus = useFormStatus()
+  const status = formStatus.status
+
   const errors = reactive({})
   const auth = useAuth()
 
@@ -22,10 +23,7 @@ export const useLogin = defineStore('login', () => {
     form.password = ''
     form.remember = false
 
-    status.value = {
-      type: null,
-      message: null
-    }
+    formStatus.reset()
 
     errors.value = {}
   }
@@ -35,10 +33,8 @@ export const useLogin = defineStore('login', () => {
 
     loading.value = true
     errors.value = {}
-    status.value = {
-      type: null,
-      message: null
-    }
+
+    formStatus.reset()
 
     return window.axios
       .post('auth/login', form)
@@ -51,10 +47,7 @@ export const useLogin = defineStore('login', () => {
         }
 
         if (error.response.status === 400) {
-          status.value = {
-            type: 'error',
-            message: error.response.data.message
-          }
+          formStatus.createError(error.response.data.message)
         }
       })
       .finally(() => {
