@@ -1,26 +1,19 @@
 import { reactive } from 'vue'
 import { defineStore } from 'pinia'
 import { useAuth } from '@/stores/auth'
-import { useFormStatus } from '@/composables/formStatus'
-import { useFormLoading } from '@/composables/formLoading'
-import { useFormErrors } from '@/composables/formErrors'
+import { useFormContent } from '@/composables/formContent/formContent'
 
 export const useRegister = defineStore('register', () => {
+  const formContent = useFormContent()
+  const { formStatus, formLoading, formErrors } = formContent.getContentComponents()
+  const { status, loading, errors } = formContent.getContentItems()
+
   const form = reactive({
     name: '',
     email: '',
     password: '',
     password_confirmation: ''
   })
-
-  const formStatus = useFormStatus()
-  const status = formStatus.status
-
-  const formLoading = useFormLoading()
-  const loading = formLoading.loading
-
-  const formErrors = useFormErrors()
-  const errors = formErrors.errors
 
   const auth = useAuth()
 
@@ -30,8 +23,7 @@ export const useRegister = defineStore('register', () => {
     form.password = ''
     form.password_confirmation = ''
 
-    formStatus.reset()
-    formErrors.reset()
+    formContent.reset()
   }
 
   function handleSubmit() {
@@ -39,8 +31,7 @@ export const useRegister = defineStore('register', () => {
 
     formLoading.on()
 
-    formErrors.reset()
-    formStatus.reset()
+    formContent.reset()
 
     return window.axios
       .post('auth/register', form)

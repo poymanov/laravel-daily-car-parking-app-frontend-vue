@@ -1,41 +1,31 @@
 import { reactive } from 'vue'
 import { defineStore } from 'pinia'
-import { useFormStatus } from '@/composables/formStatus'
-import { useFormLoading } from '@/composables/formLoading'
-import { useFormErrors } from '@/composables/formErrors'
+import { useFormContent } from '@/composables/formContent/formContent'
 
 export const useChangePassword = defineStore('change-password', () => {
+  const formContent = useFormContent()
+  const { formStatus, formLoading, formErrors } = formContent.getContentComponents()
+  const { status, loading, errors } = formContent.getContentItems()
+
   const form = reactive({
     current_password: '',
     password: '',
     password_confirmation: ''
   })
 
-  const formLoading = useFormLoading()
-  const loading = formLoading.loading
-
-  const formStatus = useFormStatus()
-  const status = formStatus.status
-
-  const formErrors = useFormErrors()
-  const errors = formErrors.errors
-
   function resetForm() {
     form.current_password = ''
     form.password = ''
     form.password_confirmation = ''
 
-    formStatus.reset()
-    formErrors.reset()
+    formContent.reset()
   }
 
   function updatePassword() {
     if (loading.value) return
 
-    formStatus.reset()
-
     formLoading.on()
-    formErrors.reset()
+    formContent.reset()
 
     return window.axios
       .patch('profile/password', form)

@@ -1,19 +1,12 @@
 import { reactive } from 'vue'
 import { defineStore } from 'pinia'
 import { useAuth } from '@/stores/auth'
-import { useFormStatus } from '@/composables/formStatus'
-import { useFormLoading } from '@/composables/formLoading'
-import { useFormErrors } from '@/composables/formErrors'
+import { useFormContent } from '@/composables/formContent/formContent'
 
 export const useLogin = defineStore('login', () => {
-  const formLoading = useFormLoading()
-  const loading = formLoading.loading
-
-  const formStatus = useFormStatus()
-  const status = formStatus.status
-
-  const formErrors = useFormErrors()
-  const errors = formErrors.errors
+  const formContent = useFormContent()
+  const { formStatus, formLoading, formErrors } = formContent.getContentComponents()
+  const { status, loading, errors } = formContent.getContentItems()
 
   const auth = useAuth()
 
@@ -28,8 +21,7 @@ export const useLogin = defineStore('login', () => {
     form.password = ''
     form.remember = false
 
-    formStatus.reset()
-    formErrors.reset()
+    formContent.reset()
   }
 
   function handleSubmit() {
@@ -37,8 +29,7 @@ export const useLogin = defineStore('login', () => {
 
     formLoading.on()
 
-    formErrors.reset()
-    formStatus.reset()
+    formContent.reset()
 
     return window.axios
       .post('auth/login', form)
