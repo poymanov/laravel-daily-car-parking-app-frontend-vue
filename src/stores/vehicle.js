@@ -1,4 +1,4 @@
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useFormContent } from '@/composables/formContent/formContent'
 import { useRouter } from 'vue-router'
@@ -8,6 +8,8 @@ export const useVehicle = defineStore('vehicle', () => {
   const { formStatus, formLoading, formErrors } = formContent.getContentComponents()
   const { status, loading, errors } = formContent.getContentItems()
   const router = useRouter()
+
+  const vehicles = ref([])
 
   const form = reactive({
     plate_number: null,
@@ -46,5 +48,9 @@ export const useVehicle = defineStore('vehicle', () => {
       })
   }
 
-  return { form, errors, loading, resetForm, storeVehicle, status }
+  function getVehicles() {
+    return window.axios.get('vehicles').then((response) => (vehicles.value = response.data))
+  }
+
+  return { form, errors, loading, resetForm, storeVehicle, status, vehicles, getVehicles }
 })
