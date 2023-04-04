@@ -84,6 +84,10 @@ export const useVehicle = defineStore('vehicle', () => {
     return window.axios.get('vehicles').then((response) => (vehicles.value = response.data))
   }
 
+  function deleteVehicle(vehicle) {
+    return window.axios.delete(`vehicles/${vehicle.id}`).then(getVehicles)
+  }
+
   return {
     form,
     errors,
@@ -94,6 +98,7 @@ export const useVehicle = defineStore('vehicle', () => {
     vehicles,
     getVehicles,
     updateVehicle,
-    getVehicle
+    getVehicle,
+    deleteVehicle
   }
 })
