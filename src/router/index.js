@@ -73,6 +73,12 @@ const router = createRouter({
       component: () => import('@/views/Parkings/ActiveParkings.vue')
     },
     {
+      path: '/parkings/history',
+      name: 'parkings.history',
+      beforeEnter: auth,
+      component: () => import('@/views/Parkings/ParkingHistory.vue')
+    },
+    {
       path: '/parkings/new',
       name: 'parkings.create',
       beforeEnter: auth,

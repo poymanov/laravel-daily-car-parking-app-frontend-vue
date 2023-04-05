@@ -9,6 +9,7 @@ export const useParking = defineStore('parking', () => {
   const { status, loading, errors } = formContent.getContentItems()
   const router = useRouter()
   const parkings = ref([])
+  const stoppedParkings = ref([])
 
   const form = reactive({
     vehicle_id: null,
@@ -57,6 +58,12 @@ export const useParking = defineStore('parking', () => {
     })
   }
 
+  function getStoppedParkings() {
+    return window.axios.get('parkings/stopped').then((response) => {
+      stoppedParkings.value = response.data
+    })
+  }
+
   return {
     form,
     status,
@@ -66,6 +73,8 @@ export const useParking = defineStore('parking', () => {
     startParking,
     stopParking,
     parkings,
-    getActiveParkings
+    getActiveParkings,
+    stoppedParkings,
+    getStoppedParkings
   }
 })
