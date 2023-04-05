@@ -15,11 +15,13 @@ export const useAuth = defineStore('auth', () => {
     window.axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken.value}`
   }
 
-  function login(accessToken) {
+  function login(accessToken, origin = 'login') {
     setAccessToken(accessToken)
 
     profile.fetchCurrentUser()
-    router.push({ name: 'vehicles.index' })
+
+    if (origin === 'login') return router.push({ name: 'parkings.active' })
+    if (origin === 'register') return router.push({ name: 'vehicles.index' })
   }
 
   function destroyTokenAndRedirectTo(routeName = 'login') {
