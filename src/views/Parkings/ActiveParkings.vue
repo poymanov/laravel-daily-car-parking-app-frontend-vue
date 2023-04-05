@@ -49,7 +49,13 @@ onBeforeUnmount(() => clearInterval(interval))
           </span>
           <span class="pt-0.5">&nbsp;&euro;</span>
         </div>
-        <button type="button" class="btn btn-danger uppercase ml-auto">stop</button>
+        <button
+          type="button"
+          @click="store.stopParking(parking)"
+          class="btn btn-danger uppercase ml-auto"
+        >
+          stop
+        </button>
       </div>
     </div>
   </div>

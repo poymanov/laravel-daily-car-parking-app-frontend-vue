@@ -47,6 +47,10 @@ export const useParking = defineStore('parking', () => {
       })
   }
 
+  function stopParking(parking) {
+    window.axios.patch(`parkings/${parking.id}`).then(getActiveParkings)
+  }
+
   function getActiveParkings() {
     return window.axios.get('parkings/active').then((response) => {
       parkings.value = response.data
@@ -60,6 +64,7 @@ export const useParking = defineStore('parking', () => {
     loading,
     resetForm,
     startParking,
+    stopParking,
     parkings,
     getActiveParkings
   }
