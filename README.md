@@ -1,35 +1,43 @@
-# laravel-daily-car-parking-app-frontend-vue
+# Car Parking App (Frontend Client)
 
-This template should help get you started developing with Vue 3 in Vite.
+![](docs/cover.png)
 
-## Recommended IDE Setup
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Unofficial_JavaScript_logo_2.svg" alt="JavaScript" title="Javascript" width="40" height="40"/> <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg" alt="Vue" title="Vue" width="40" height="40"/> <img src="https://www.vectorlogo.zone/logos/docker/docker-tile.svg" alt="Docker" title="Docker" width="40" height="40"/>
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Приложение для парковки транспортного средства в выбранной зоне парковки (Frontend Client).
 
-## Customize configuration
+Используется вместе с [API](https://github.com/poymanov/laravel-daily-car-parking-app-api).
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+[![CI](https://github.com/poymanov/laravel-daily-car-parking-app-frontend-vue/actions/workflows/ci.yml/badge.svg)](https://github.com/poymanov/laravel-daily-car-parking-app-frontend-vue/actions/workflows/ci.yml)
 
-## Project Setup
+### Функционал
 
-```sh
-npm install
-```
+- Пользователи могут регистрироваться и аутентифицироваться;
+- Добавление транспортных средств в учетную запись;
+- Добавление парковочных зон для расчета стоимости парковки;
+- Запуск сеанса парковки;
+- Остановка сеанса парковки;
+- Получение активных сеансов парковки аутентифицированного пользователя;
+- Получение завершенных сеансов парковки аутентифицированного пользователя.
 
-### Compile and Hot-Reload for Development
+### Предварительные требования
 
-```sh
-npm run dev
-```
+Для запуска приложения требуется **Docker** и **Docker Compose**.
 
-### Compile and Minify for Production
+### Основные команды
 
-```sh
-npm run build
-```
+| Команда                | Описание                        |
+|:-----------------------|:--------------------------------|
+| `make init`            | Инициализация приложения        |
+| `make up`              | Запуск приложения               |
+| `make down`            | Остановка приложения            |
+| `make frontend-format` | Форматирование кода             |
+| `make frontend-lint`   | Проверка качества кода (ESLint) |
 
-### Lint with [ESLint](https://eslint.org/)
+### Интерфейсы
 
-```sh
-npm run lint
-```
+Приложение - http://localhost:8082
+
+---
+
+Код написан в образовательных целях в рамках курса [Vue.js 3 Client Parking App: Step-by-Step](https://laraveldaily.com/course/vue-client-parking-app-laravel-api).
