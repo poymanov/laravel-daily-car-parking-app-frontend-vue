@@ -13,3 +13,7 @@
 ![](img/03.png)
 
 ---
+
+---
+
+[<< Регистрация](../03-registration/README.md) | [Изменение данных профиля >>](../05-update-profile/README.md) | [**К оглавлению**](../README.md)

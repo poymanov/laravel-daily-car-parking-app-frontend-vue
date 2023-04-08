@@ -27,3 +27,4 @@ make down
 
 ---
 
+[<< Установка](../01-setup/README.md) | [Регистрация >>](../03-registration/README.md) | [**К оглавлению**](../README.md)

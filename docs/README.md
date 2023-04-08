@@ -2,7 +2,7 @@
 
 * [Установка](01-setup/README.md)
 * [Запуск](02-start/README.md)
-* [Регистрация](03-registration/REAME.md)
+* [Регистрация](03-registration/README.md)
 * [Аутентификация](04-login/README.md)
 * [Изменение данных профиля](05-update-profile/README.md)
 * [Изменение пароля пользователя](06-change-password/README.md)

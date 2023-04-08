@@ -8,3 +8,5 @@ make init
 ```
 
 ---
+
+[Запуск >>](../02-start/README.md) | [**К оглавлению**](../README.md)
